@@ -7,10 +7,10 @@ volumes:
 services:
     php:
         container_name: ${PHP_CONTAINER_NAME}
-        env_file: ${PHP_CONTEXT_DIR}/.php.env
+        env_file: ${PHP_CONTEXT_DIR}/docker/php/.php.env
         build:
             context: ${PHP_CONTEXT_DIR}
-            dockerfile: Dockerfile
+            dockerfile: ./docker/php/Dockerfile
         volumes:
             - ${PHP_VOLUME_DIR}:/var/www
             - "public-storage:/var/www/storage/app/public"
@@ -24,9 +24,9 @@ services:
                     - nginx
         build:
             context: ${NGINX_CONTEXT_DIR}
-            dockerfile: Dockerfile
+            dockerfile: ./docker/nginx/Dockerfile
         volumes:
-            - ${NGINX_VOLUME_DIR}:/var/www
+            - ${NGINX_VOLUME_DIR}/public:/var/www/public
         depends_on:
             - php
     postgres:

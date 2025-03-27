@@ -41,7 +41,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install gd
 
 # Copy PHP config
-COPY local.ini /usr/local/etc/php/conf.d/local.ini
+COPY ./docker/php/local.ini /usr/local/etc/php/conf.d/local.ini
 
 RUN echo "access.log = /dev/null" >> /usr/local/etc/php-fpm.d/www.conf
 

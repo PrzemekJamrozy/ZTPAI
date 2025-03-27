@@ -8,29 +8,29 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // AUTH
-Route::post('/api/register', [AuthController::class, 'register']);
-Route::post('/api/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware([
     "auth:sanctum",
 ])->group(function () {
-    Route::post('/api/logout', [AuthController::class, 'logout']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 
 // USER
-    Route::post('/api/user/onboarding', [UserController::class, 'finishUserOnboarding']);
-    Route::apiResource('/api/user', UserController::class)->only(['show',"update","destroy"]);
+    Route::post('/user/onboarding', [UserController::class, 'finishUserOnboarding']);
+    Route::apiResource('/user', UserController::class)->only(['show',"update","destroy"]);
 
 
 // MATCHES
-    Route::get('/api/match/get-potential-matches', [MatcherController::class, 'getPotentialMatches']);
-    Route::get('/api/match/get-matches', [MatcherController::class, 'getMatches']);
-    Route::post('/api/match/accept-match', [MatcherController::class, 'acceptMatch']);
+    Route::get('/match/get-potential-matches', [MatcherController::class, 'getPotentialMatches']);
+    Route::get('/match/get-matches', [MatcherController::class, 'getMatches']);
+    Route::post('/match/accept-match', [MatcherController::class, 'acceptMatch']);
 
-    Route::get('/api/debug', [DebugController::class, 'debug']);
-    Route::post('/api/debug', [DebugController::class, 'debugPost']);
+    Route::get('/debug', [DebugController::class, 'debug']);
+    Route::post('/debug', [DebugController::class, 'debugPost']);
 
 //ADMIN ENDPOINTS
-    Route::apiResource("/api/admin/user", UserAdminController::class);
-    Route::get('/api/admin/permissions', [UserAdminController::class, 'getAllSystemPermissions']);
+    Route::apiResource("/admin/user", UserAdminController::class);
+    Route::get('/admin/permissions', [UserAdminController::class, 'getAllSystemPermissions']);
 });
 

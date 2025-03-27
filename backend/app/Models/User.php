@@ -3,14 +3,30 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\GenderEnum;
+use App\Enums\UserStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
+use Laravel\Sanctum\HasApiTokens;
 
+/**
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $surname
+ * @property string $email
+ * @property string $password
+ * @property UserStatus $status
+ * @property GenderEnum $gender
+ * @property-read Carbon $created_at
+ * @property-read Carbon $updated_at
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -20,7 +36,13 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'gender',
+        'surname'
+    ];
+
+    protected $casts = [
+        'status' => UserStatus::class,
+        'gender' => GenderEnum::class,
     ];
 
     /**
