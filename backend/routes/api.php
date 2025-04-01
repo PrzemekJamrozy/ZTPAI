@@ -14,8 +14,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware([
     "auth:sanctum",
 ])->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
 
+    Route::post('/logout', [AuthController::class, 'logout']);
 // USER
     Route::post('/user/onboarding', [UserController::class, 'finishUserOnboarding']);
     Route::apiResource('/user', UserController::class)->only(['show',"update","destroy"]);
