@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 // AUTH
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get("/admin/user/temp", [UserAdminController::class, 'index']);
+Route::get("/admin/user/temp/{userId}", [UserAdminController::class, 'show']);
 
 Route::middleware([
     "auth:sanctum",
@@ -19,7 +21,6 @@ Route::middleware([
 // USER
     Route::post('/user/onboarding', [UserController::class, 'finishUserOnboarding']);
     Route::apiResource('/user', UserController::class)->only(['show',"update","destroy"]);
-
 
 // MATCHES
     Route::get('/match/get-potential-matches', [MatcherController::class, 'getPotentialMatches']);

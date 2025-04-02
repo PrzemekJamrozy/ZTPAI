@@ -1,0 +1,112 @@
+.commonOnboardingBody {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #6a0dad, #d63384);
+    color: #fff;
+}
+
+.container {
+    background-color: #ffffff;
+    color: #4a0e72;
+    border-radius: 10px;
+    padding: 2rem;
+    width: 100%;
+    min-width: 500px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.container h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #6a0dad;
+}
+
+.formGroup {
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.formGroup input,
+.formGroup select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: #4a0e72;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+    border-color: #d63384;
+    outline: none;
+    box-shadow: 0 0 5px rgba(214, 51, 132, 0.5);
+}
+
+.passwordWrapper {
+    position: relative;
+}
+
+.passwordWrapper input {
+    padding-right: 2.5rem;
+}
+
+.passwordToggle {
+    position: absolute;
+    right: 10px;
+    top: 55%;
+    cursor: pointer;
+    color: #4a0e72;
+}
+
+.btnSubmit {
+    background-color: #6a0dad;
+    color: #fff;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btnSubmit:hover {
+    background-color: #d63384;
+}
+
+.container p {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.container a {
+    color: #d63384;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.container a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .container {
+        min-width: 350px;
+    }
+}

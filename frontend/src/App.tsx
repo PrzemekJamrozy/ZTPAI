@@ -1,26 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {MainPage} from "./pages/MainPage.tsx";
 import {BrowserRouter, Route, Routes} from "react-router";
-import MainPage from "./pages/MainPage";
+import {LoginPage} from "./pages/LoginPage.tsx";
+import {RegisterPage} from "./pages/RegisterPage.tsx";
+import {AdminUserList} from "./pages/Admin/AdminUserList.tsx";
+import {AdminUserDetails} from "./pages/Admin/AdminUserDetails.tsx";
 
 function App() {
   return (
-      <BrowserRouter>
-        <Routes>
-            <Route path="/" element={<MainPage/>}/>
-            <Route path="/login" element={<MainPage/>}/>
-            <Route path="/register" element={<MainPage/>}/>
-            <Route path="/matches" element={<MainPage/>}/>
-            <Route path="/user-profile" element={<MainPage/>}/>
-            <Route path="/edit-profile" element={<MainPage/>}/>
-            <Route path="admin">
-                <Route index element={<MainPage/>}/>
-                <Route path="/edit-profile/:id" element={<MainPage/>}/>
-            </Route>
-        </Routes>
-      </BrowserRouter>
-  );
+   <BrowserRouter>
+       <Routes>
+           <Route path='/' element={<MainPage/>} />
+           <Route path='/login' element={<LoginPage/>} />
+           <Route path='/register' element={<RegisterPage/>} />
+           <Route path='/admin/users' element={<AdminUserList/>} />
+           <Route path='/admin/users/:userId' element={<AdminUserDetails/>} />
+       </Routes>
+   </BrowserRouter>
+  )
 }
 
-export default App;
+export default App

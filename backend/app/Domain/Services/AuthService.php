@@ -35,6 +35,7 @@ class AuthService {
             ->whereEmail($loginDto->email)
             ->first();
 
+
         // In order to not have many tokens in DB we first remove all tokens than create a new one
         $this->authActions->logout($user);
         $generatedToken = $this->authActions->login($user);
