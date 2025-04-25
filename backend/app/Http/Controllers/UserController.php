@@ -17,15 +17,6 @@ class UserController extends Controller {
     ) {
     }
 
-    public function show(Request $request, int $userId) {
-        $user = $this->userService->getUser(
-            Auth::user(),
-            $userId
-        );
-
-        return ResponseHelper::success(UserResource::from($user));
-    }
-
     public function update(Request $request, int $userId) {
         $user = $this->userService->updateUser(
             Auth::user(),

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Enums\UserStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -18,4 +19,8 @@ class UserQuery extends BaseQuery {
         return $this;
     }
 
+    public function whereStatus(UserStatus $status): static {
+        $this->query->where('status', $status);
+        return $this;
+    }
 }

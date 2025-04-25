@@ -18,9 +18,14 @@ Route::middleware([
 ])->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/auth/me', [AuthController::class, 'me']);
 // USER
     Route::post('/user/onboarding', [UserController::class, 'finishUserOnboarding']);
-    Route::apiResource('/user', UserController::class)->only(['show',"update","destroy"]);
+    Route::apiResource('/user', UserController::class)->only(["update","destroy"]);
+    Route::get('/user', [UserController::class, 'index']);
+    Route::post('/user', [UserController::class, 'create']);
+    Route::put('/user/{userId}', [UserController::class, 'update']);
+    Route::delete('/user/{userId}', [UserController::class, 'destroy']);
 
 // MATCHES
     Route::get('/match/get-potential-matches', [MatcherController::class, 'getPotentialMatches']);

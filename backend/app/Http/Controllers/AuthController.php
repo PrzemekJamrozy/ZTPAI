@@ -7,8 +7,10 @@ use App\Domain\Dto\Auth\Input\RegisterDto;
 use App\Domain\Services\AuthService;
 use App\Exceptions\InvalidCredentialsException;
 use App\Helpers\ResponseHelper;
+use App\Resources\User\UserResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller {
 
@@ -41,4 +43,17 @@ class AuthController extends Controller {
 
         return ResponseHelper::success(["message" => "Logged out"]);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function me(Request $request): JsonResponse {
+        $user = $this->authService->me(
+            Auth::user()
+        );
+
+        return ResponseHelper::success(UserResource::from($user));
+    }
+
 }

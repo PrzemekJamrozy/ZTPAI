@@ -7,6 +7,7 @@ use App\Domain\Actions\UserActions;
 use App\Domain\Dto\Auth\Input\LoginDto;
 use App\Domain\Dto\Auth\Input\LogoutDto;
 use App\Domain\Dto\Auth\Input\RegisterDto;
+use App\Enums\UserStatus;
 use App\Exceptions\InvalidCredentialsException;
 use App\Models\User;
 use App\Repositories\UserQuery;
@@ -33,6 +34,7 @@ class AuthService {
 
         $user = UserQuery::create()
             ->whereEmail($loginDto->email)
+            ->whereStatus(UserStatus::ACTIVE)
             ->first();
 
 
@@ -52,6 +54,10 @@ class AuthService {
         /** @var User $user */
         $user = Auth::user();
         $this->authActions->logout($user);
+        return $user;
+    }
+
+    public function me(User $user): User {
         return $user;
     }
 }

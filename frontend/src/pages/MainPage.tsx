@@ -3,8 +3,8 @@ import LandingTwo from '../assets/landing-two.jpg'
 import styles from "../styles/MainPage.module.css"
 import {useEffect} from "react";
 import {Link} from "react-router";
+import {Circles} from "react-loader-spinner";
 function MainPage(){
-
     useEffect(()=>{
       document.body.classList.add(styles.mainPageBody)
       return () =>{
@@ -15,7 +15,6 @@ function MainPage(){
     return (
         <>
             <header className={styles.mainPageHeader}>DateSpark</header>
-
             <div className={styles.container}>
                 <section className={styles.hero}>
                     <div>
