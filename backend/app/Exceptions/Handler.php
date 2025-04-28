@@ -12,7 +12,7 @@ class Handler {
 
     public static function handle($request, Throwable $e):JsonResponse {
         if ($e instanceof ValidationException) {
-            return ResponseHelper::error($e->getMessage(), 422);
+            return ResponseHelper::error($e->errors(), 422);
         }
 
         if ($e instanceof InvalidCredentialsException) {
