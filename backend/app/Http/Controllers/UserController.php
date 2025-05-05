@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Dto\User\Input\UserOnboardingInput;
 use App\Domain\Dto\User\Input\UserUpdateDto;
 use App\Domain\Services\UserService;
 use App\Helpers\ResponseHelper;
 use App\Resources\DeletedModelResource;
+use App\Resources\User\UserProfileResource;
 use App\Resources\User\UserResource;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -69,6 +72,19 @@ class UserController extends Controller {
         );
 
         return ResponseHelper::success(new DeletedModelResource($user->id));
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function finishUserOnboarding(Request $request): JsonResponse {
+        $userProfile = $this->userService->finishUserOnboarding(
+            Auth::user(),
+            UserOnboardingInput::from($request->all())
+        );
+
+        return ResponseHelper::success(UserProfileResource::from($userProfile));
     }
 
 }

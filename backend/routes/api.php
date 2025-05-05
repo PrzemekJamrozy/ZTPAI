@@ -20,10 +20,6 @@ Route::middleware([
 // USER
     Route::post('/user/onboarding', [UserController::class, 'finishUserOnboarding']);
     Route::apiResource('/user', UserController::class)->only(["update","destroy"]);
-    Route::get('/user', [UserController::class, 'index']);
-    Route::post('/user', [UserController::class, 'create']);
-    Route::put('/user/{userId}', [UserController::class, 'update']);
-    Route::delete('/user/{userId}', [UserController::class, 'destroy']);
 
 // MATCHES
     Route::get('/match/get-potential-matches', [MatcherController::class, 'getPotentialMatches']);

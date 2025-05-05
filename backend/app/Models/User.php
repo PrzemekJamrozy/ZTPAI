@@ -5,7 +5,9 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\GenderEnum;
 use App\Enums\UserStatus;
+use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -21,6 +23,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $password
  * @property UserStatus $status
  * @property GenderEnum $gender
+ * @property-read UserProfile $profile
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
  */
@@ -55,6 +58,10 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function profile():HasOne {
+        return $this->hasOne(UserProfile::class, 'user_id');
+    }
 
     /**
      * Get the attributes that should be cast.

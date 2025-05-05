@@ -1,0 +1,439 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Datespark API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Allows to login to service",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "Email",
+                                        "type": "string",
+                                        "example": "example@email.com"
+                                    },
+                                    "password": {
+                                        "description": "Password",
+                                        "type": "string",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns token to use later for auth",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "token": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    },
+                    "422": {
+                        "description": "Invalid body"
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Allows to register user",
+                "operationId": "8a56853624e025573120a09a4c75d468",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "surname",
+                                    "email",
+                                    "password",
+                                    "gender"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Name of user",
+                                        "type": "string",
+                                        "example": "Jan"
+                                    },
+                                    "surname": {
+                                        "description": "Surname of user",
+                                        "type": "string",
+                                        "example": "Kowalski"
+                                    },
+                                    "email": {
+                                        "description": "Email",
+                                        "type": "string",
+                                        "example": "example@email.com"
+                                    },
+                                    "password": {
+                                        "description": "Password",
+                                        "type": "string",
+                                        "example": "password"
+                                    },
+                                    "gender": {
+                                        "description": "Gender of user. Value must be either MALE or FEMALE",
+                                        "type": "string",
+                                        "example": "MALE"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns message that user logout successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "message": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid body"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Allows to logout user",
+                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "token"
+                                ],
+                                "properties": {
+                                    "token": {
+                                        "description": "Token of logged user",
+                                        "type": "string",
+                                        "example": "1|token"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns token to use later for auth",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "message": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    },
+                    "422": {
+                        "description": "Invalid body"
+                    }
+                }
+            }
+        },
+        "/admin/user": {
+            "get": {
+                "tags": [
+                    "UserAdmin"
+                ],
+                "summary": "Allows admin to get list of users",
+                "operationId": "493657292c54e0d467d416faa8818989",
+                "responses": {
+                    "200": {
+                        "description": "Returns list of users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/UserResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    },
+                    "422": {
+                        "description": "Invalid body"
+                    }
+                }
+            }
+        },
+        "/admin/user/{userId}": {
+            "get": {
+                "tags": [
+                    "UserAdmin"
+                ],
+                "summary": "Allows admin to get user by id",
+                "operationId": "35426014695b3563829ddafda034211f",
+                "responses": {
+                    "200": {
+                        "description": "Returns user of given id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    },
+                    "422": {
+                        "description": "Invalid body"
+                    }
+                }
+            }
+        },
+        "/api/user": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Allows to login to service",
+                "operationId": "fd4f39f7820d3f3cbc259c5b30fed830",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "$ref": "#/components/schemas/UserUpdateDto"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns user with updated schema",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "": {
+                                                    "$ref": "#/components/schemas/UserResource"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    },
+                    "422": {
+                        "description": "Invalid body"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "UserUpdateDto": {
+                "description": "User update",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Jan"
+                    },
+                    "surname": {
+                        "type": "string",
+                        "example": "Kowalski"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "jan@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "password"
+                    },
+                    "gender": {
+                        "description": "Either MALE or FEMALE",
+                        "type": "string",
+                        "example": "MALE"
+                    }
+                },
+                "type": "object"
+            },
+            "UserResource": {
+                "description": "User",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Jan Kowalski"
+                    },
+                    "surname": {
+                        "type": "string",
+                        "example": "jan@example.com"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "jan@example.com"
+                    },
+                    "status": {
+                        "description": "Either ACTIVE or DURING_REGISTER",
+                        "type": "string",
+                        "example": "ACTIVE"
+                    },
+                    "gender": {
+                        "description": "Either MALE or FEMALE",
+                        "type": "string",
+                        "example": "MALE"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Endpoints related to auth"
+        },
+        {
+            "name": "UserAdmin",
+            "description": "Endpoints related to user admin"
+        },
+        {
+            "name": "User",
+            "description": "Endpoints related to user"
+        }
+    ]
+}

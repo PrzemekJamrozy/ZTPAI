@@ -28,6 +28,13 @@ class Handler {
             return ResponseHelper::error($e->getMessage(), $e->getCode());
         }
 
+        if ($e instanceof ImageConversionException) {
+            return ResponseHelper::error($e->getMessage(), $e->getCode());
+        }
+        if ($e instanceof UserOnboardingAlreadyFinishedException) {
+            return ResponseHelper::error($e->getMessage(), $e->getCode());
+        }
+
         //Fallback
         return ResponseHelper::error($e->getMessage());
     }

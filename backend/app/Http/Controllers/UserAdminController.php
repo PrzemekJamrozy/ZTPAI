@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Dto\User\Input\UserUpdateDto;
 use App\Domain\Services\AdminUserService;
 use App\Helpers\ResponseHelper;
+use App\Resources\DeletedModelResource;
 use App\Resources\User\UserResource;
 use Illuminate\Http\Request;
 
@@ -13,11 +15,10 @@ use Illuminate\Http\Request;
  *     description="Endpoints related to user admin"
  * )
  */
-class UserAdminController extends Controller
-{
+class UserAdminController extends Controller {
     public function __construct(
         protected AdminUserService $userService
-    ){
+    ) {
 
     }
 
@@ -43,7 +44,7 @@ class UserAdminController extends Controller
      *     @OA\Response(response=422, description="Invalid body")
      * )
      */
-    public function index(){
+    public function index() {
         $users = $this->userService->getUsers();
 
         return ResponseHelper::success(UserResource::collect($users));
@@ -71,9 +72,29 @@ class UserAdminController extends Controller
      *     @OA\Response(response=422, description="Invalid body")
      * )
      */
-    public function show(Request $request, int $userId){
+    public function show(Request $request, int $userId) {
         $user = $this->userService->getUser($userId);
 
         return ResponseHelper::success(UserResource::from($user));
+    }
+
+    public function update(Request $request, int $userId) {
+        $user = $this->userService->updateUser(
+            $userId,
+            UserUpdateDto::from($request->all())
+        );
+
+        return ResponseHelper::success(UserResource::from($user));
+    }
+
+    public function destroy(Request $request, int $userId) {
+        $this->userService->deleteUser($userId);
+        return ResponseHelper::success(new DeletedModelResource($userId));
+    }
+
+    public function getAllSystemPermissions(Request $request) {
+        $roles = $this->userService->getRoles();
+
+        return ResponseHelper::success($roles);
     }
 }

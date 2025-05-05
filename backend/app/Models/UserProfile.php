@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
  * @property string user_bio
  * @property string $facebook_link
  * @property string $instagram_link
+ * @property string $avatar_path
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read User $user
@@ -22,11 +23,10 @@ use Illuminate\Support\Carbon;
 class UserProfile extends Model {
 
     protected $fillable = [
-        'user_id',
-        'preferred_gender',
         'user_bio',
         'facebook_link',
         'instagram_link',
+        'preferred_gender',
     ];
 
     protected $casts = [

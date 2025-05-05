@@ -34,7 +34,6 @@ class AuthService {
 
         $user = UserQuery::create()
             ->whereEmail($loginDto->email)
-            ->whereStatus(UserStatus::ACTIVE)
             ->first();
 
 

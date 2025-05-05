@@ -3,17 +3,24 @@
 namespace App\Domain\Services;
 
 use App\Domain\Actions\UserActions;
+use App\Domain\Actions\UserProfileActions;
+use App\Domain\Dto\User\Input\UserOnboardingInput;
 use App\Domain\Dto\User\Input\UserUpdateDto;
+use App\Enums\UserStatus;
 use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\UserOnboardingAlreadyFinishedException;
 use App\Models\User;
+use App\Models\UserProfile;
 use App\Repositories\UserQuery;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserService {
 
 
     public function __construct(
         protected UserActions $userActions,
+        protected UserProfileActions $userProfileActions,
     ) {
     }
 
@@ -52,5 +59,20 @@ class UserService {
         $this->userActions->deleteUser($currentUser);
 
         return $user;
+    }
+
+    public function finishUserOnboarding(User $currentUser, UserOnboardingInput $input): UserProfile {
+
+        if($currentUser->profile !== null){
+            throw new UserOnboardingAlreadyFinishedException();
+        }
+
+        $result = DB::transaction(function () use ($currentUser, $input) {
+            $result = $this->userProfileActions->createUserProfile($currentUser, $input);
+            $this->userActions->changeUserStatus($currentUser, UserStatus::ACTIVE);
+            return $result;
+        });
+
+        return $result;
     }
 }
