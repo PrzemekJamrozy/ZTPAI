@@ -5,6 +5,7 @@ namespace App\Domain\Services;
 use App\Domain\Actions\MatcherActions;
 use App\Domain\Dto\Matcher\AcceptMatchInput;
 use App\Models\User;
+use App\Models\UserMatch;
 use App\Repositories\MatcherQuery;
 use App\Repositories\UserQuery;
 use Illuminate\Support\Collection;
@@ -19,6 +20,8 @@ class MatcherService {
 
     public function getPotentialMatches(User $currentUser): Collection {
         $users = UserQuery::create()
+            ->loadRelation("profile")
+            ->loadRelation("roles")
             ->whereIdNot($currentUser->id)
             ->wherePreferredGender($currentUser->profile->preferred_gender)
             ->get();
@@ -33,13 +36,24 @@ class MatcherService {
         return $usersToShowInMatcher;
     }
 
+    /**
+     * @return Collection<int,User>
+     */
     public function getMatches(User $currentUser): Collection {
         $userMatches = MatcherQuery::create()
+            ->loadRelation("firstUser")
+            ->loadRelation("secondUser")
             ->whereMatchesApproved($currentUser)
             ->get();
 
-
-        return $userMatches;
+        $userList = $userMatches->map(function (UserMatch $match) use ($currentUser) {
+            if($currentUser->id === $match->user_first_id){
+                return $match->secondUser;
+            }else{
+                return $match->firstUser;
+            }
+        });
+        return $userList;
     }
 
     public function acceptMatch(User $currentUser, AcceptMatchInput $input) {

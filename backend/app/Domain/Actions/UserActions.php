@@ -3,8 +3,9 @@
 namespace App\Domain\Actions;
 
 use App\Domain\Dto\Auth\Input\RegisterDto;
+use App\Domain\Dto\User\Input\UserAdminUpdateDto;
 use App\Domain\Dto\User\Input\UserUpdateDto;
-use App\Enums\Permissions;
+use App\Enums\Roles;
 use App\Enums\UserStatus;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -18,16 +19,22 @@ class UserActions {
         $user = new User();
         $user->status = USerStatus::DURING_REGISTRATION;
         $user->password = Hash::make($dto->password);
-        $user->assignRole(Permissions::USER->value);
+        $user->assignRole(Roles::USER->value);
         $user->fill($dto->all());
         $user->save();
         return $user;
     }
 
-    public function updateUser(User $user, UserUpdateDto $dto): User {
+    public function updateUser(User $user, UserUpdateDto|UserAdminUpdateDto $dto): User {
         if(!($dto->password instanceof Optional)) {
             $user->password = Hash::make($dto->password);
         }
+
+        if($dto->role){
+            $user->removeRole($user->getRoleNames()[0]);
+            $user->assignRole($dto->role);
+        }
+
         $user->fill($dto->all());
         $user->save();
         return $user;

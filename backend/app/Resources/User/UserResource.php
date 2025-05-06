@@ -4,6 +4,8 @@ namespace App\Resources\User;
 
 use App\Enums\GenderEnum;
 use App\Enums\UserStatus;
+use App\Models\User;
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
 
 /**
@@ -16,15 +18,40 @@ use Spatie\LaravelData\Data;
  *     @OA\Property(property="email", type="string", example="jan@example.com"),
  *     @OA\Property(property="status", type="string", example="ACTIVE", description="Either ACTIVE or DURING_REGISTER"),
  *     @OA\Property(property="gender", type="string", example="MALE", description="Either MALE or FEMALE")
+ *     @OA\Property(property="role", type="string", example="USER", description="Role of user in system")
  * )
  */
 class UserResource extends Data {
+    /**
+     * @param int $id
+     * @param string $name
+     * @param string $surname
+     * @param string $email
+     * @param UserStatus $status
+     * @param GenderEnum $gender
+     * @param array $roles
+     */
+    public function __construct(
+        public int        $id,
+        public string     $name,
+        public string     $surname,
+        public string     $email,
+        public UserStatus $status,
+        public GenderEnum $gender,
+        public array      $roles,
+        public UserProfileResource $profile) {
+    }
 
-    public int $id;
-    public string $name;
-    public string $surname;
-    public string $email;
-    public UserStatus $status;
-    public GenderEnum $gender;
-
+    public static function fromModel(User $user): self {
+        return new self(
+            $user->id,
+            $user->name,
+            $user->surname,
+            $user->email,
+            $user->status,
+            $user->gender,
+            $user->getRoleNames()->toArray(),
+            UserProfileResource::from($user->profile)
+        );
+    }
 }

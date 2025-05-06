@@ -1,15 +1,17 @@
 import styles from "../styles/CommonOnboarding.module.css";
-import {Link} from "react-router";
+import {Link, useNavigate} from "react-router";
 import {useEffect} from "react";
 import {useForm} from "react-hook-form";
 import {GenderEnum} from "../common/enums/GenderEnum.ts";
 import {RegisterForm} from "../common/Forms/RegisterForm.ts";
 import {action_register} from "../common/actions/actions.ts";
+import {useToast} from "../hooks/useToast.tsx";
 
 
 
 function RegisterPage() {
-
+    const navigate = useNavigate();
+    const toast = useToast();
     const {register, handleSubmit} = useForm<RegisterForm>({
         defaultValues: {
             email:"",
@@ -29,11 +31,21 @@ function RegisterPage() {
        }
     },[])
 
+    const _handleSubmit = async (data:RegisterForm) => {
+        const result = await action_register(data)
+
+        if(result.success){
+            navigate('/login')
+        }else{
+            toast(result.data.toString(), "error")
+        }
+    }
+
     return(
         <>
             <div className={styles.container}>
                 <h1>Rejestracja</h1>
-                <form onSubmit={handleSubmit((data)=> action_register(data))}>
+                <form onSubmit={handleSubmit((data)=> _handleSubmit(data))}>
                     <div className={styles.formGroup}>
                         <label htmlFor="name">Imię</label>
                         <input type="text" id="name" {...register('name')} placeholder="Wpisz swoje imię" required/>

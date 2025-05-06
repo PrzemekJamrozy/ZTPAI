@@ -26,6 +26,8 @@ class UserService {
 
     public function getUser(User $currentUser, int $userId):User {
         $user = UserQuery::create()
+            ->loadRelation("profile")
+            ->loadRelation("roles")
             ->find($userId);
 
         if(!$user || $user->id !== $currentUser->id) {
@@ -37,13 +39,19 @@ class UserService {
 
     public function updateUser(User $currentUser, int $userId, UserUpdateDto $updateInput):User {
         $user = UserQuery::create()
+            ->loadRelation("profile")
+            ->loadRelation("roles")
             ->find($userId);
 
         if(!$user || $user->id !== $currentUser->id) {
             throw new ModelNotFoundException();
         }
 
-        $user = $this->userActions->updateUser($currentUser, $updateInput);
+        $user = DB::transaction(function () use ($updateInput, $currentUser) {
+            $user = $this->userActions->updateUser($currentUser, $updateInput);
+            $this->userProfileActions->updateUserProfile($updateInput->profile, $currentUser->profile);
+            return $user;
+        });
 
         return $user;
     }

@@ -1,0 +1,108 @@
+:root {
+    --primary-color: #6a0dad;
+    --accent-color: #ff69b4;
+    --bg-color: #f7f7f7;
+    --text-color: #333;
+}
+
+.userEditBody {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.container {
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.userEditBody h1, h2 {
+    color: var(--primary-color);
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 10px 5px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: var(--accent-color);
+}
+
+.userCard {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    background: #fff;
+}
+
+.userCard img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.deleteAccount {
+    background-color: #fb2658;
+}
+
+.deleteAccount:hover {
+    background-color: #ff4975;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+
+    }
+
+    .userCard {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .userCard img {
+        margin-bottom: 10px;
+    }
+}
+
+.userEditBody label {
+    display: block;
+    margin: 15px 0 5px;
+    font-weight: bold;
+}
+
+.userEditBody input[type="text"], input[type="url"], input[type="email"], input[type="password"], textarea, select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.userEditBody input[type="text"]:focus, input[type="url"]:focus, input[type="email"]:focus, input[type="password"]:focus, textarea:focus, select:focus {
+    border-color: #6a0dad;
+    outline: none;
+    box-shadow: 0 0 5px rgba(106, 13, 173, 0.5);
+}
+
+.userEditBody textarea {
+    resize: vertical;
+}

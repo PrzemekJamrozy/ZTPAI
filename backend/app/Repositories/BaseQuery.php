@@ -41,4 +41,9 @@ abstract class BaseQuery {
     public function find(int $modelId): Model|null {
         return $this->query->find($modelId);
     }
+
+    public function loadRelation(string $relation): static {
+        $this->query->with($relation);
+        return $this;
+    }
 }

@@ -27,10 +27,11 @@ const authSlice = createSlice({
         },
         setIsCheckingToken: (state, action:PayloadAction<boolean>) => {
             state.isCheckingToken = action.payload;
-        }
+        },
+        resetAuth: () => initialState,
     }
 })
 
-export const {setToken, clearToken, setIsAuthenticated, setIsCheckingToken} = authSlice.actions;
+export const {setToken, clearToken, setIsAuthenticated, setIsCheckingToken, resetAuth} = authSlice.actions;
 
 export default authSlice.reducer;

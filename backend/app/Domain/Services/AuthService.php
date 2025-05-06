@@ -57,6 +57,8 @@ class AuthService {
     }
 
     public function me(User $user): User {
+        $user->load('roles');
+        $user->load("profile");
         return $user;
     }
 }

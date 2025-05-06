@@ -24,10 +24,9 @@ class UserUpdateDto extends Data {
     public string|Optional $name;
     public string|Optional $surname;
 
-    #[Unique('users','email')]
     #[Email]
     public string|Optional $email;
-    public string|Optional $password;
+    public string|Optional|null $password;
     public GenderEnum|Optional $gender;
-
+    public UserProfileUpdateDto|Optional $profile;
 }

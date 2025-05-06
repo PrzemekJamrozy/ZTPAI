@@ -6,6 +6,7 @@ use App\Domain\Dto\Matcher\AcceptMatchInput;
 use App\Domain\Services\MatcherService;
 use App\Helpers\ResponseHelper;
 use App\Repositories\UserQuery;
+use App\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,15 +18,15 @@ class MatcherController extends Controller {
     }
 
     public function getPotentialMatches(Request $request) {
-        $this->matcherService->getPotentialMatches(Auth::user());
+        $result = $this->matcherService->getPotentialMatches(Auth::user());
 
-        return ResponseHelper::success("Success");
+        return ResponseHelper::success(UserResource::collect($result));
     }
 
     public function getMatches(Request $request) {
         $result = $this->matcherService->getMatches(Auth::user());
 
-        return ResponseHelper::success("Success");
+        return ResponseHelper::success(UserResource::collect($result));
     }
 
     public function acceptMatch(Request $request) {

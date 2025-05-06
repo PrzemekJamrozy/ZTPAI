@@ -7,12 +7,14 @@ import {action_login} from "../common/actions/actions.ts";
 import {Link, useNavigate} from "react-router";
 import {useDispatch} from "react-redux";
 import {setToken} from "../store/authSlice.ts";
+import {useToast} from "../hooks/useToast.tsx";
 
 function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    const toast = useToast();
+    
     const {register, handleSubmit} = useForm<LoginForm>({
         defaultValues: {
             email:"",
@@ -28,7 +30,7 @@ function LoginPage() {
             dispatch(setToken(result.data.token));
             navigate('/swiper')
         }else{
-            console.log("login fail")
+            toast("Login failed","error");
         }
     }
 

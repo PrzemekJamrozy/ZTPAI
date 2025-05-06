@@ -3,9 +3,11 @@
 namespace App\Domain\Actions;
 
 use App\Domain\Dto\User\Input\UserOnboardingInput;
+use App\Domain\Dto\User\Input\UserProfileUpdateDto;
 use App\Helpers\ImageHelper;
 use App\Models\User;
 use App\Models\UserProfile;
+use Illuminate\Support\Optional;
 
 class UserProfileActions {
 
@@ -20,12 +22,16 @@ class UserProfileActions {
         $userProfile->user_id = $user->id;
         $result = $this->imageHelper->saveImage($input->avatar);
         $userProfile->avatar_path = $result;
-        $this->updateUserProfile($user, $input, $userProfile);
+        $this->updateUserProfile($input, $userProfile);
         return $userProfile;
     }
 
-    public function updateUserProfile(User $user, UserOnboardingInput $input, UserProfile $profile): UserProfile {
+    public function updateUserProfile(UserOnboardingInput|UserProfileUpdateDto $input, UserProfile $profile): UserProfile {
         $profile->fill($input->all());
+        if($input->avatar !== null) {
+            $result = $this->imageHelper->saveImage($input->avatar);
+            $profile->avatar_path = $result;
+        }
         $profile->save();
 
         return $profile;

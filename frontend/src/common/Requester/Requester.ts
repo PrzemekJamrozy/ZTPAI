@@ -4,7 +4,13 @@ const BASE_URL = 'http://localhost:9001/api'
 
 type MethodType = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
-function requester<T>(link: BACKEND_URLS, method: MethodType, payload?: T): Promise<Response> {
+type Payload = {
+    headers: Object;
+    body?: Object;
+    method: MethodType;
+}
+
+function requester<T>(link: BACKEND_URLS|string, method: MethodType, payload?: T|Object): Promise<Response> {
     const token = localStorage.getItem("token");
     const headers = {
         'Content-Type': 'application/json',
@@ -13,12 +19,15 @@ function requester<T>(link: BACKEND_URLS, method: MethodType, payload?: T): Prom
     if(token){
         headers['Authorization'] = `Bearer ${token}` ;
     }
+    const body = payload ? JSON.stringify(payload) : null;
+    let data:Payload = {method, headers}
 
-    return fetch(`${BASE_URL}${link}`, {
-        method,
-        headers,
-        body: JSON.stringify(payload),
-    })
+    if(body !== null) {
+        data = {...data, body: body}
+    }
+
+    // @ts-ignore
+    return fetch(`${BASE_URL}${link}`, data)
 
 }
 

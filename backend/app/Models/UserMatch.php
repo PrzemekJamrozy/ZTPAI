@@ -26,7 +26,7 @@ class UserMatch extends Model
         'user_second_id',
     ];
 
-    public function userFirst():BelongsTo{
+    public function firstUser():BelongsTo{
         return $this->belongsTo(User::class, 'user_first_id');
     }
 

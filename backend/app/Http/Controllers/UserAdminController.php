@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Dto\User\Input\UserAdminUpdateDto;
 use App\Domain\Dto\User\Input\UserUpdateDto;
 use App\Domain\Services\AdminUserService;
 use App\Helpers\ResponseHelper;
@@ -81,7 +82,7 @@ class UserAdminController extends Controller {
     public function update(Request $request, int $userId) {
         $user = $this->userService->updateUser(
             $userId,
-            UserUpdateDto::from($request->all())
+            UserAdminUpdateDto::from($request->all())
         );
 
         return ResponseHelper::success(UserResource::from($user));

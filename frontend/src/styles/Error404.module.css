@@ -1,0 +1,74 @@
+:root {
+    --primary-color: #6a0dad;
+    --accent-color: #ff69b4;
+    --bg-color: #f7f7f7;
+    --text-color: #333;
+}
+
+.error404Body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    text-align: center;
+}
+
+.error404Body h1 {
+    font-size: 5rem;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.error404Body h2 {
+    font-size: 1.5rem;
+    margin: 20px 0;
+}
+
+.error404Body p {
+    font-size: 1rem;
+    margin: 10px 0 20px;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: var(--accent-color);
+}
+
+.illustration {
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+.error404Body img {
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+    .error404Body h1 {
+        font-size: 3rem;
+    }
+
+    .error404Body h2 {
+        font-size: 1.2rem;
+    }
+}
