@@ -26,11 +26,11 @@ Route::middleware([
     Route::get('/match/get-potential-matches', [MatcherController::class, 'getPotentialMatches']);
     Route::get('/match/get-matches', [MatcherController::class, 'getMatches']);
     Route::post('/match/accept-match', [MatcherController::class, 'acceptMatch']);
+    Route::post('/match/reject-match', [MatcherController::class, 'rejectMatch']);
 
 //    Route::post('/debug', [DebugController::class, 'debugPost']);
 
 //ADMIN ENDPOINTS
     Route::apiResource("/admin/users", UserAdminController::class);
-    Route::get('/admin/permissions', [UserAdminController::class, 'getAllSystemPermissions']);
 });
 

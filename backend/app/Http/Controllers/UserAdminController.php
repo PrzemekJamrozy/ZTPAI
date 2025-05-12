@@ -9,6 +9,7 @@ use App\Helpers\ResponseHelper;
 use App\Resources\DeletedModelResource;
 use App\Resources\User\UserResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @OA\Tag(
@@ -46,7 +47,9 @@ class UserAdminController extends Controller {
      * )
      */
     public function index() {
-        $users = $this->userService->getUsers();
+        $users = $this->userService->getUsers(
+            Auth::user()
+        );
 
         return ResponseHelper::success(UserResource::collect($users));
     }
@@ -74,13 +77,14 @@ class UserAdminController extends Controller {
      * )
      */
     public function show(Request $request, int $userId) {
-        $user = $this->userService->getUser($userId);
+        $user = $this->userService->getUser(Auth::user(), $userId);
 
         return ResponseHelper::success(UserResource::from($user));
     }
 
     public function update(Request $request, int $userId) {
         $user = $this->userService->updateUser(
+            Auth::user(),
             $userId,
             UserAdminUpdateDto::from($request->all())
         );
@@ -89,13 +93,11 @@ class UserAdminController extends Controller {
     }
 
     public function destroy(Request $request, int $userId) {
-        $this->userService->deleteUser($userId);
+        $this->userService->deleteUser(
+            Auth::user(),
+            $userId,
+        );
         return ResponseHelper::success(new DeletedModelResource($userId));
     }
 
-    public function getAllSystemPermissions(Request $request) {
-        $roles = $this->userService->getRoles();
-
-        return ResponseHelper::success($roles);
-    }
 }

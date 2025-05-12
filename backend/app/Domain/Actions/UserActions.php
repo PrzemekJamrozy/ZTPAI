@@ -8,6 +8,7 @@ use App\Domain\Dto\User\Input\UserUpdateDto;
 use App\Enums\Roles;
 use App\Enums\UserStatus;
 use App\Models\User;
+use App\Models\UserMatch;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
@@ -42,6 +43,8 @@ class UserActions {
 
     public function deleteUser(User $user): User {
         $user->tokens()->delete();
+        $user->profile?->delete();
+        $user->matches()->each(fn(UserMatch $match) => $match->delete());
         $user->delete();
         return $user;
     }

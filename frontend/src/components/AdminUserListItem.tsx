@@ -6,6 +6,7 @@ type AdminUserListItemProps = {
     surname: string
     id: number
     avatar: string
+    handleUserDelete: (userId:number) => void
 }
 
 function AdminUserListItem(props:AdminUserListItemProps) {
@@ -15,6 +16,7 @@ function AdminUserListItem(props:AdminUserListItemProps) {
         surname,
         id,
         avatar,
+        handleUserDelete,
     } = props
     return (
         <div className={styles.userCard}>
@@ -23,7 +25,7 @@ function AdminUserListItem(props:AdminUserListItemProps) {
                 <p><strong>Imię:</strong> {name}</p>
                 <p><strong>Nazwisko:</strong> {surname}</p>
                 <Link to={`/admin/users/${id}/edit`} className={styles.button}>Edytuj</Link>
-                <button className={`${styles.button}`}>Usuń</button>
+                <button className={`${styles.button}`} onClick={() => handleUserDelete(id)}>Usuń</button>
             </div>
         </div>
     )

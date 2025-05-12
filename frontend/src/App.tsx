@@ -19,11 +19,11 @@ import {setUser} from "./store/userSlice.ts";
 import {Matches} from "./pages/Matches.tsx";
 import {Spinner} from "./components/Spinner.tsx";
 import {AdminRoute} from "./common/Routes/AdminRoute.tsx";
+import {OnboardingPage} from "./pages/OnboardingPage.tsx";
 
 function App() {
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(true);
-
     useEffect(() => {
         const _handleRequest = async () => {
             const result = await action_auth_me()
@@ -66,6 +66,11 @@ function App() {
                             <Route path='/user/profile' element={
                                 <ProtectedRoute>
                                     <UserProfile/>
+                                </ProtectedRoute>
+                            }/>
+                            <Route path='/user/onboarding' element={
+                                <ProtectedRoute>
+                                    <OnboardingPage/>
                                 </ProtectedRoute>
                             }/>
                             <Route path='/user/edit' element={

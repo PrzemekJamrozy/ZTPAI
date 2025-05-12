@@ -7,10 +7,12 @@ use App\Enums\GenderEnum;
 use App\Enums\UserStatus;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -24,6 +26,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property UserStatus $status
  * @property GenderEnum $gender
  * @property-read UserProfile $profile
+ * @property-read Collection<int,UserMatch> $matchesAsFirst
+ * @property-read Collection<int,UserMatch> $matchesAsSecond
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
  */
@@ -61,6 +65,18 @@ class User extends Authenticatable
 
     public function profile():HasOne {
         return $this->hasOne(UserProfile::class, 'user_id');
+    }
+
+    public function matchesAsFirst():HasMany {
+        return $this->hasMany(UserMatch::class, 'user_first_id');
+    }
+
+    public function matchesAsSecond():HasMany {
+        return $this->hasMany(UserMatch::class, 'user_second_id');
+    }
+
+    public function matches():Collection {
+        return $this->matchesAsFirst->merge($this->matchesAsSecond);
     }
 
     /**

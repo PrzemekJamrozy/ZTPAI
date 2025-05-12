@@ -56,7 +56,9 @@ type RegisterResponse = ApiResponse<RegisterData>
 type AuthMeResponse = ApiResponse<UserData>
 type UserResponse = ApiResponse<UserData>
 type UserListResponse = ApiResponse<UserData[]>
-
+type MessageResponse = ApiResponse<string>
+type MessageWrappedResponse = ApiResponse<{ message:string }>
+type DeletedModelResponse = ApiResponse<{id:number}>
 
 export type {
     AuthMeResponse,
@@ -65,4 +67,7 @@ export type {
     UserResponse,
     UserData,
     UserListResponse,
+    MessageResponse,
+    DeletedModelResponse,
+    MessageWrappedResponse
 }

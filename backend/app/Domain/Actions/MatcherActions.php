@@ -29,20 +29,20 @@ class MatcherActions {
         return $usersThatCanBeDisplayedInMatcher;
     }
 
-    public function createMatch(User $firstUser, int $secondUser): UserMatch {
+    public function createMatch(User $firstUser, int $secondUser, bool $wantToMatch): UserMatch {
         $match = new UserMatch();
         $match->user_first_id = $firstUser->id;
         $match->user_second_id = $secondUser;
-        $match->first_want_match = true;
+        $match->first_want_match = $wantToMatch;
         $match->save();
         return $match;
     }
 
-    public function resolveMatchAccept(UserMatch $userMatch, User $user): UserMatch {
+    public function resolveMatch(UserMatch $userMatch, User $user, bool $wantToMatch): UserMatch {
         if ($userMatch->user_first_id === $user->id) {
-            $userMatch->first_want_match = true;
+            $userMatch->first_want_match = $wantToMatch;
         } else {
-            $userMatch->second_want_match = true;
+            $userMatch->second_want_match = $wantToMatch;
         }
         $userMatch->save();
         return $userMatch;

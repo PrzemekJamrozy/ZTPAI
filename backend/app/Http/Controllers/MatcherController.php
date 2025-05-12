@@ -36,4 +36,12 @@ class MatcherController extends Controller {
 
         return ResponseHelper::success("Success");
     }
+
+    public function rejectMatch(Request $request) {
+        $this->matcherService->rejectMatch(
+            Auth::user(),
+            AcceptMatchInput::from($request->all()));
+
+        return ResponseHelper::success("Success");
+    }
 }

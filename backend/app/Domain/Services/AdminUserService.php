@@ -7,6 +7,7 @@ use App\Domain\Actions\UserProfileActions;
 use App\Domain\Dto\User\Input\UserAdminUpdateDto;
 use App\Domain\Dto\User\Input\UserUpdateDto;
 use App\Enums\Roles;
+use App\Exceptions\UserNotAuthorized;
 use App\Models\User;
 use App\Repositories\UserQuery;
 use Illuminate\Support\Collection;
@@ -21,7 +22,10 @@ class AdminUserService {
     ) {
     }
 
-    public function getUsers(): Collection {
+    public function getUsers(User $currentUser): Collection {
+        if(!$currentUser->hasRole(Roles::ADMIN->value)){
+            throw new UserNotAuthorized();
+        }
         $users = UserQuery::create()
             ->loadRelation("profile")
             ->loadRelation("roles")
@@ -30,7 +34,10 @@ class AdminUserService {
     }
 
 
-    public function getUser(int $userId): User {
+    public function getUser(User $currentUser, int $userId): User {
+        if(!$currentUser->hasRole(Roles::ADMIN->value)){
+            throw new UserNotAuthorized();
+        }
         $user = UserQuery::create()
             ->loadRelation("profile")
             ->loadRelation("roles")
@@ -38,7 +45,10 @@ class AdminUserService {
         return $user;
     }
 
-    public function updateUser(int $userId, UserAdminUpdateDto $dto): User {
+    public function updateUser(User $currentUser, int $userId, UserAdminUpdateDto $dto): User {
+        if(!$currentUser->hasRole(Roles::ADMIN->value)){
+            throw new UserNotAuthorized();
+        }
         $user = UserQuery::create()
             ->loadRelation("profile")
             ->loadRelation("roles")
@@ -55,7 +65,10 @@ class AdminUserService {
         return $user;
     }
 
-    public function deleteUser(int $userId): User {
+    public function deleteUser(User $currentUser, int $userId): User {
+        if(!$currentUser->hasRole(Roles::ADMIN->value)){
+            throw new UserNotAuthorized();
+        }
         $user = UserQuery::create()->find($userId);
 
         $this->userActions->deleteUser($user);

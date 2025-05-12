@@ -32,12 +32,13 @@ function RegisterPage() {
     },[])
 
     const _handleSubmit = async (data:RegisterForm) => {
+        toast("Trwa rejestrowanie", "info")
         const result = await action_register(data)
-
         if(result.success){
+            toast("Pomyślnie zarejestrowany")
             navigate('/login')
         }else{
-            toast(result.data.toString(), "error")
+            toast("Rejestracja się nie powiodła", "error")
         }
     }
 

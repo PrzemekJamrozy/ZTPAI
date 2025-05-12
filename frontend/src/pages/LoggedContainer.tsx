@@ -6,6 +6,8 @@ import {resetUser} from "../store/userSlice.ts";
 import {resetAuth} from "../store/authSlice.ts";
 import {RootState} from "../store/store.ts";
 import {RolesEnum} from "../common/enums/RolesEnum.ts";
+import {action_logout} from "../common/actions/actions.ts";
+import {useToast} from "../hooks/useToast.tsx";
 
 type Props = {
     children: React.ReactNode;
@@ -16,16 +18,25 @@ function LoggedContainer({children}: Props) {
     const navigate = useNavigate();
     const [isActive, setIsActive] = useState(false);
     const {roles} = useSelector((root: RootState) => root.user)
+    const toast = useToast()
+
     const handleHamburger = () => {
         setIsActive(!isActive);
     }
 
-    const _handleLogout = () => {
-        dispatch(resetUser())
-        dispatch(resetAuth())
-        localStorage.clear();
+    const _handleLogout = async () => {
+        const result = await action_logout()
 
-        navigate('/')
+        if(result.success){
+            dispatch(resetUser())
+            dispatch(resetAuth())
+            localStorage.clear();
+
+            navigate('/')
+        }else{
+            toast("Nie udało się wylogować", "error")
+        }
+
     }
 
     return (

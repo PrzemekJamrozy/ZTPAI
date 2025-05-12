@@ -33,7 +33,7 @@ class MatcherService {
 
         $usersToShowInMatcher = $this->matcherActions->filterUsersToShowOnMatcher($users, $filterCollection, $currentUser);
 
-        return $usersToShowInMatcher;
+        return $usersToShowInMatcher->flatten();
     }
 
     /**
@@ -64,12 +64,30 @@ class MatcherService {
 
         if ($match === null) {
             //If no create new intent
-            $match = $this->matcherActions->createMatch($currentUser, $input->idOfUserUserWantToMatch);
+            $match = $this->matcherActions->createMatch($currentUser, $input->idOfUserUserWantToMatch,true);
         } else {
             //If yes set value to want match to true for given user
-            $this->matcherActions->resolveMatchAccept($match, $currentUser);
+            $this->matcherActions->resolveMatch($match, $currentUser,true);
         }
 
         return $match;
     }
+
+    public function rejectMatch(User $currentUser, AcceptMatchInput $input) {
+        //Check if match already exists
+        $match = MatcherQuery::create()
+            ->whereMatchExistsForUser($currentUser, $input->idOfUserUserWantToMatch)
+            ->first();
+
+        if ($match === null) {
+            //If no create new intent
+            $match = $this->matcherActions->createMatch($currentUser, $input->idOfUserUserWantToMatch,false);
+        } else {
+            //If yes set value to want match to false for given user
+            $this->matcherActions->resolveMatch($match, $currentUser,false);
+        }
+
+        return $match;
+    }
+
 }

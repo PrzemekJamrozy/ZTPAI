@@ -22,15 +22,7 @@ use Spatie\LaravelData\Data;
  * )
  */
 class UserResource extends Data {
-    /**
-     * @param int $id
-     * @param string $name
-     * @param string $surname
-     * @param string $email
-     * @param UserStatus $status
-     * @param GenderEnum $gender
-     * @param array $roles
-     */
+
     public function __construct(
         public int        $id,
         public string     $name,
@@ -39,7 +31,7 @@ class UserResource extends Data {
         public UserStatus $status,
         public GenderEnum $gender,
         public array      $roles,
-        public UserProfileResource $profile) {
+        public UserProfileResource|null $profile) {
     }
 
     public static function fromModel(User $user): self {
@@ -51,7 +43,7 @@ class UserResource extends Data {
             $user->status,
             $user->gender,
             $user->getRoleNames()->toArray(),
-            UserProfileResource::from($user->profile)
+            $user->profile !== null ? UserProfileResource::from($user->profile) : null
         );
     }
 }

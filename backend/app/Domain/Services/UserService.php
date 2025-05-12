@@ -64,12 +64,14 @@ class UserService {
             throw new ModelNotFoundException();
         }
 
-        $this->userActions->deleteUser($currentUser);
+        DB::transaction(function () use ($currentUser) {
+            $this->userActions->deleteUser($currentUser);
+        });
 
         return $user;
     }
 
-    public function finishUserOnboarding(User $currentUser, UserOnboardingInput $input): UserProfile {
+    public function finishUserOnboarding(User $currentUser, UserOnboardingInput $input): User {
 
         if($currentUser->profile !== null){
             throw new UserOnboardingAlreadyFinishedException();
@@ -80,7 +82,8 @@ class UserService {
             $this->userActions->changeUserStatus($currentUser, UserStatus::ACTIVE);
             return $result;
         });
+        $currentUser->load("profile");
 
-        return $result;
+        return $currentUser;
     }
 }

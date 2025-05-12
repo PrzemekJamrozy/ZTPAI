@@ -3,11 +3,12 @@ import styles from "../styles/CommonOnboarding.module.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import {useForm} from "react-hook-form";
 import {LoginForm} from "../common/Forms/LoginForm.ts";
-import {action_login} from "../common/actions/actions.ts";
+import {action_auth_me, action_login} from "../common/actions/actions.ts";
 import {Link, useNavigate} from "react-router";
 import {useDispatch} from "react-redux";
 import {setToken} from "../store/authSlice.ts";
 import {useToast} from "../hooks/useToast.tsx";
+import {setUser} from "../store/userSlice.ts";
 
 function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
@@ -23,14 +24,22 @@ function LoginPage() {
     });
 
     const handleLogin = async (data:LoginForm) =>  {
+        toast("Trwa logowanie...", "info")
         const result = await action_login(data)
 
         if(result.success){
             localStorage.setItem("token",result.data.token);
             dispatch(setToken(result.data.token));
-            navigate('/swiper')
+            const userResult = await action_auth_me()
+
+            if(userResult.success){
+                dispatch(setUser(userResult.data))
+                navigate('/swiper')
+            }else{
+                toast("Nie udało pobrać się danych użytkownika","error");
+            }
         }else{
-            toast("Login failed","error");
+            toast("Nieprawdłowe dane logowania","error");
         }
     }
 

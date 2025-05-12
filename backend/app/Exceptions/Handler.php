@@ -35,6 +35,10 @@ class Handler {
             return ResponseHelper::error($e->getMessage(), $e->getCode());
         }
 
+        if($e instanceof UserNotAuthorized){
+            return ResponseHelper::error($e->getMessage(), $e->getCode());
+        }
+
         //Fallback
         return ResponseHelper::error($e->getMessage());
     }

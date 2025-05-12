@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Domain\Dto\User\Input\UserOnboardingInput;
 use App\Domain\Dto\User\Input\UserUpdateDto;
 use App\Domain\Services\UserService;
+use App\Exceptions\UserOnboardingAlreadyFinishedException;
 use App\Helpers\ResponseHelper;
 use App\Resources\DeletedModelResource;
 use App\Resources\User\UserProfileResource;
@@ -65,7 +66,7 @@ class UserController extends Controller {
         return ResponseHelper::success(UserResource::from($user));
     }
 
-    public function destroy(Request $request, int $userId) {
+    public function destroy(Request $request, int $userId): JsonResponse {
         $user = $this->userService->deleteUser(
             Auth::user(),
             $userId,
@@ -77,14 +78,15 @@ class UserController extends Controller {
     /**
      * @param Request $request
      * @return JsonResponse
+     * @throws UserOnboardingAlreadyFinishedException
      */
     public function finishUserOnboarding(Request $request): JsonResponse {
-        $userProfile = $this->userService->finishUserOnboarding(
+        $user = $this->userService->finishUserOnboarding(
             Auth::user(),
             UserOnboardingInput::from($request->all())
         );
 
-        return ResponseHelper::success(UserProfileResource::from($userProfile));
+        return ResponseHelper::success(UserResource::from($user));
     }
 
 }
