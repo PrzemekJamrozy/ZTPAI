@@ -26,9 +26,10 @@ class UserAdminController extends Controller {
 
     /**
      * @OA\Get (
-     *     path="/admin/user",
+     *     path="/api/admin/users",
      *     summary="Allows admin to get list of users",
      *     tags={"UserAdmin"},
+     *     security={{"sanctum":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Returns list of users",
@@ -42,7 +43,7 @@ class UserAdminController extends Controller {
      *             )
      *         )
      *     ),
-     *     @OA\Response(response=401, description="Invalid credentials"),
+     *     @OA\Response(response=401, description="Invalid credentials or not authorized"),
      *     @OA\Response(response=422, description="Invalid body")
      * )
      */
@@ -56,9 +57,17 @@ class UserAdminController extends Controller {
 
     /**
      * @OA\Get (
-     *     path="/admin/user/{userId}",
+     *     path="/api/admin/users/{userId}",
      *     summary="Allows admin to get user by id",
      *     tags={"UserAdmin"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          description="ID of the user",
+     *          required=true,
+     *          @OA\Schema(type="integer")
+     *      ),
      *     @OA\Response(
      *         response=200,
      *         description="Returns user of given id",
@@ -72,8 +81,9 @@ class UserAdminController extends Controller {
      *             )
      *         )
      *     ),
-     *     @OA\Response(response=401, description="Invalid credentials"),
-     *     @OA\Response(response=422, description="Invalid body")
+     *     @OA\Response(response=401, description="Invalid credentials or not authorized"),
+     *     @OA\Response(response=422, description="Invalid body"),
+     *     @OA\Response(response=400, description="Bad request")
      * )
      */
     public function show(Request $request, int $userId) {
@@ -81,6 +91,36 @@ class UserAdminController extends Controller {
 
         return ResponseHelper::success(UserResource::from($user));
     }
+
+    /**
+     * @OA\Put(
+     *     path="/api/admin/users/{id}",
+     *     summary="Allows admin to update user",
+     *     tags={"UserAdmin"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *           name="id",
+     *           in="path",
+     *           description="ID of the user",
+     *           required=true,
+     *           @OA\Schema(type="integer")
+     *       ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Returns user data",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean"),
+     *             @OA\Property(property="status", type="string"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 ref="#/components/schemas/UserResource"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=401, description="Invalid credentials or not authorized"),
+     *     @OA\Response(response=422, description="Invalid body")
+     * )
+     */
 
     public function update(Request $request, int $userId) {
         $user = $this->userService->updateUser(
@@ -92,6 +132,36 @@ class UserAdminController extends Controller {
         return ResponseHelper::success(UserResource::from($user));
     }
 
+    /**
+     * @OA\Delete  (
+     *     path="/api/admin/users/{id}",
+     *     summary="Allows admin to delete user",
+     *     tags={"UserAdmin"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *           name="id",
+     *           in="path",
+     *           description="ID of the user",
+     *           required=true,
+     *           @OA\Schema(type="integer")
+     *       ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Returns if of deleted user",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean"),
+     *             @OA\Property(property="status", type="string"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property (ref="#/components/schemas/DeletedModelResource")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=401, description="Invalid credentials or not authorized"),
+     *     @OA\Response(response=422, description="Invalid body")
+     * )
+     */
     public function destroy(Request $request, int $userId) {
         $this->userService->deleteUser(
             Auth::user(),

@@ -115,14 +115,7 @@ class AuthController extends Controller {
      *     path="/api/logout",
      *     summary="Allows to logout user",
      *     tags={"Auth"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             type="object",
-     *             required={"token"},
-     *             @OA\Property(property="token", type="string", example="1|token", description="Token of logged user"),
-     *         )
-     *     ),
+     *     security={{"sanctum":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Returns token to use later for auth",
@@ -137,7 +130,6 @@ class AuthController extends Controller {
      *         )
      *     ),
      *     @OA\Response(response=401, description="Invalid credentials"),
-     *     @OA\Response(response=422, description="Invalid body")
      * )
      */
     public function logout(Request $request): JsonResponse {
@@ -147,8 +139,26 @@ class AuthController extends Controller {
     }
 
     /**
-     * @param Request $request
-     * @return JsonResponse
+     * @OA\Get(
+     *     path="/api/auth/me",
+     *     summary="Get logged user",
+     *     tags={"Auth"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Return data of currently logged in user",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean"),
+     *             @OA\Property(property="status", type="string"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(ref="#/components/schemas/UserResource")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=401, description="Invalid credentials"),
+     * )
      */
     public function me(Request $request): JsonResponse {
         $user = $this->authService->me(

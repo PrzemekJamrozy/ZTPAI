@@ -29,9 +29,17 @@ class UserController extends Controller {
 
     /**
      * @OA\Put(
-     *     path="/api/user",
+     *     path="/api/user/{id}",
      *     summary="Allows to login to service",
      *     tags={"User"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          description="ID of the user",
+     *          required=true,
+     *          @OA\Schema(type="integer")
+     *      ),
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -66,6 +74,36 @@ class UserController extends Controller {
         return ResponseHelper::success(UserResource::from($user));
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/user/{id}",
+     *     summary="Allows user to delete its account",
+     *     tags={"User"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          description="ID of the user",
+     *          required=true,
+     *          @OA\Schema(type="integer")
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Return id of deleted user",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean"),
+     *             @OA\Property(property="status", type="string"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(ref="#/components/schemas/DeletedModelResource")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=401, description="Invalid credentials"),
+     *     @OA\Response(response=404, description="User not found")
+     * )
+     */
     public function destroy(Request $request, int $userId): JsonResponse {
         $user = $this->userService->deleteUser(
             Auth::user(),
@@ -76,9 +114,35 @@ class UserController extends Controller {
     }
 
     /**
-     * @param Request $request
-     * @return JsonResponse
-     * @throws UserOnboardingAlreadyFinishedException
+     * @OA\Post(
+     *     path="/api/user/onboarding",
+     *     summary="Finish user registration",
+     *     tags={"User"},
+     *     security={{"sanctum":{}}},
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              required={"bio", "fbLink", "igLink", "preferredGender", "avatar"},
+     *              ref="#/components/schemas/UserOnboardingInput"
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Return data of user",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean"),
+     *             @OA\Property(property="status", type="string"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 ref="#/components/schemas/UserResource"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=401, description="Invalid credentials"),
+     *     @OA\Response(response=409, description="User already finished onboarding"),
+     *     @OA\Response(response=422, description="Invalid body")
+     * )
      */
     public function finishUserOnboarding(Request $request): JsonResponse {
         $user = $this->userService->finishUserOnboarding(

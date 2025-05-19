@@ -165,26 +165,6 @@
                 ],
                 "summary": "Allows to logout user",
                 "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "token"
-                                ],
-                                "properties": {
-                                    "token": {
-                                        "description": "Token of logged user",
-                                        "type": "string",
-                                        "example": "1|token"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Returns token to use later for auth",
@@ -214,20 +194,279 @@
                     },
                     "401": {
                         "description": "Invalid credentials"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/auth/me": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Get logged user",
+                "operationId": "b9abb1a7a74670a19c215c2c133f14d8",
+                "responses": {
+                    "200": {
+                        "description": "Return data of currently logged in user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "": {
+                                                    "$ref": "#/components/schemas/UserResource"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/match/get-potential-matches": {
+            "get": {
+                "tags": [
+                    "Match"
+                ],
+                "summary": "Get potential matches for logged user",
+                "operationId": "ce202e8e1aa8b4e1e46a65be01772a4d",
+                "responses": {
+                    "200": {
+                        "description": "Return list of user which is potential match",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/UserResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/match/get-matches": {
+            "get": {
+                "tags": [
+                    "Match"
+                ],
+                "summary": "Get matches for logged user",
+                "operationId": "3b1264f941e5b6f429ce5def89256ea6",
+                "responses": {
+                    "200": {
+                        "description": "Return list of user which is match",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/UserResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/match/accept-match": {
+            "post": {
+                "tags": [
+                    "Match"
+                ],
+                "summary": "Create or accept match of a given user for logged user",
+                "operationId": "2a3c690fafc58429652bf90d6cb2da78",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "idOfUserUserWantToMatch"
+                                ],
+                                "properties": {
+                                    "idOfUserUserWantToMatch": {
+                                        "description": "Id of user which logged user want to accept",
+                                        "type": "integer",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Return message with success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
                     },
                     "422": {
                         "description": "Invalid body"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
-        "/admin/user": {
+        "/api/match/reject-match": {
+            "post": {
+                "tags": [
+                    "Match"
+                ],
+                "summary": "Create or reject match of a given user for logged user",
+                "operationId": "66a27b569d0f2da28e586a96d671a5bd",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "idOfUserUserWantToMatch"
+                                ],
+                                "properties": {
+                                    "idOfUserUserWantToMatch": {
+                                        "description": "Id of user which logged user want to reject",
+                                        "type": "integer",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Return message with success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    },
+                    "422": {
+                        "description": "Invalid body"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/users": {
             "get": {
                 "tags": [
                     "UserAdmin"
                 ],
                 "summary": "Allows admin to get list of users",
-                "operationId": "493657292c54e0d467d416faa8818989",
+                "operationId": "9913e00853ba6b78c6d28fa18c81d214",
                 "responses": {
                     "200": {
                         "description": "Returns list of users",
@@ -254,21 +493,37 @@
                         }
                     },
                     "401": {
-                        "description": "Invalid credentials"
+                        "description": "Invalid credentials or not authorized"
                     },
                     "422": {
                         "description": "Invalid body"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
-        "/admin/user/{userId}": {
+        "/api/admin/users/{userId}": {
             "get": {
                 "tags": [
                     "UserAdmin"
                 ],
                 "summary": "Allows admin to get user by id",
-                "operationId": "35426014695b3563829ddafda034211f",
+                "operationId": "470e800108cdd8ba30b0fc00d542f0c9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Returns user of given id",
@@ -292,21 +547,151 @@
                         }
                     },
                     "401": {
-                        "description": "Invalid credentials"
+                        "description": "Invalid credentials or not authorized"
+                    },
+                    "422": {
+                        "description": "Invalid body"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/users/{id}": {
+            "put": {
+                "tags": [
+                    "UserAdmin"
+                ],
+                "summary": "Allows admin to update user",
+                "operationId": "fa227bac9cbe44fabf2bcd5ae9af37fc",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns user data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials or not authorized"
                     },
                     "422": {
                         "description": "Invalid body"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "UserAdmin"
+                ],
+                "summary": "Allows admin to delete user",
+                "operationId": "dd272c802ee2e3ff70c0bee9042c6c68",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns if of deleted user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "": {
+                                                    "$ref": "#/components/schemas/DeletedModelResource"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials or not authorized"
+                    },
+                    "422": {
+                        "description": "Invalid body"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
-        "/api/user": {
+        "/api/user/{id}": {
             "put": {
                 "tags": [
                     "User"
                 ],
                 "summary": "Allows to login to service",
-                "operationId": "fd4f39f7820d3f3cbc259c5b30fed830",
+                "operationId": "5e09c26a0abb2b1bf040badb2d9c69ba",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -355,12 +740,184 @@
                     "422": {
                         "description": "Invalid body"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Allows user to delete its account",
+                "operationId": "f8d7aea516ee464d0afee90f3a1a1722",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return id of deleted user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "": {
+                                                    "$ref": "#/components/schemas/DeletedModelResource"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/user/onboarding": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Finish user registration",
+                "operationId": "1118bf0c204175a660438529fe96ace7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserOnboardingInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Return data of user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    },
+                    "409": {
+                        "description": "User already finished onboarding"
+                    },
+                    "422": {
+                        "description": "Invalid body"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         }
     },
     "components": {
         "schemas": {
+            "UserAdminUpdateDto": {
+                "description": "User update",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Jan"
+                    },
+                    "surname": {
+                        "type": "string",
+                        "example": "Kowalski"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "jan@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "password"
+                    },
+                    "gender": {
+                        "description": "Either MALE or FEMALE",
+                        "type": "string",
+                        "example": "MALE"
+                    }
+                },
+                "type": "object"
+            },
+            "UserOnboardingInput": {
+                "description": "Additional data of user",
+                "properties": {
+                    "bio": {
+                        "type": "string",
+                        "example": "Example bio"
+                    },
+                    "fbLink": {
+                        "type": "string",
+                        "example": "https://facebook.com"
+                    },
+                    "igLink": {
+                        "type": "string",
+                        "example": "https://instagram.com"
+                    },
+                    "preferredGender": {
+                        "description": "Either MALE or FEMALE",
+                        "type": "string",
+                        "example": "MALE"
+                    },
+                    "avatar": {
+                        "description": "Base64 encoded image",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "UserUpdateDto": {
                 "description": "User update",
                 "properties": {
@@ -384,6 +941,16 @@
                         "description": "Either MALE or FEMALE",
                         "type": "string",
                         "example": "MALE"
+                    }
+                },
+                "type": "object"
+            },
+            "DeletedModelResource": {
+                "description": "Delete user",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": "1"
                     }
                 },
                 "type": "object"
@@ -416,9 +983,31 @@
                         "description": "Either MALE or FEMALE",
                         "type": "string",
                         "example": "MALE"
+                    },
+                    "roles": {
+                        "description": "Array of roles of user in system",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "USER",
+                                "ADMIN"
+                            ]
+                        },
+                        "example": [
+                            "USER"
+                        ]
                     }
                 },
                 "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
             }
         }
     },
@@ -434,6 +1023,10 @@
         {
             "name": "User",
             "description": "Endpoints related to user"
+        },
+        {
+            "name": "Match",
+            "description": "Match"
         }
     ]
 }

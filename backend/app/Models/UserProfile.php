@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PreferredGender;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -21,7 +22,8 @@ use Illuminate\Support\Carbon;
  * @property-read User $user
  */
 class UserProfile extends Model {
-
+    /** @use HasFactory<\Database\Factories\UserProfileFactory> */
+    use HasFactory;
     protected $fillable = [
         'user_bio',
         'facebook_link',

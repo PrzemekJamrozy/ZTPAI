@@ -17,20 +17,27 @@ use Spatie\LaravelData\Data;
  *     @OA\Property(property="surname", type="string", example="jan@example.com"),
  *     @OA\Property(property="email", type="string", example="jan@example.com"),
  *     @OA\Property(property="status", type="string", example="ACTIVE", description="Either ACTIVE or DURING_REGISTER"),
- *     @OA\Property(property="gender", type="string", example="MALE", description="Either MALE or FEMALE")
- *     @OA\Property(property="role", type="string", example="USER", description="Role of user in system")
+ *     @OA\Property(property="gender", type="string", example="MALE", description="Either MALE or FEMALE"),
+ *     @OA\Property(
+ *         property="roles",
+ *         type="array",
+ *         example={"USER"},
+ *         description="Array of roles of user in system",
+ *         @OA\Items(type="string", enum={"USER","ADMIN"})
+ *     )
  * )
  */
+
 class UserResource extends Data {
 
     public function __construct(
-        public int        $id,
-        public string     $name,
-        public string     $surname,
-        public string     $email,
-        public UserStatus $status,
-        public GenderEnum $gender,
-        public array      $roles,
+        public int                      $id,
+        public string                   $name,
+        public string                   $surname,
+        public string                   $email,
+        public UserStatus               $status,
+        public GenderEnum               $gender,
+        public array                    $roles,
         public UserProfileResource|null $profile) {
     }
 

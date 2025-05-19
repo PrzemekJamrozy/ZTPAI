@@ -11,7 +11,7 @@ use Spatie\LaravelData\Optional;
 
 /**
  * @OA\Schema(
- *     schema="UserUpdateDto",
+ *     schema="UserAdminUpdateDto",
  *     description="User update",
  *     @OA\Property(property="name", type="string", example="Jan"),
  *     @OA\Property(property="surname", type="string", example="Kowalski"),

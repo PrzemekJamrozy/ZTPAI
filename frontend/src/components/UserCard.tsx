@@ -1,7 +1,0 @@
-
-function UserCard() {
-
-    return (
-
-    )
-}

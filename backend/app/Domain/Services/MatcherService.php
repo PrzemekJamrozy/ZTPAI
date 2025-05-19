@@ -3,7 +3,7 @@
 namespace App\Domain\Services;
 
 use App\Domain\Actions\MatcherActions;
-use App\Domain\Dto\Matcher\AcceptMatchInput;
+use App\Domain\Dto\Matcher\MatchInput;
 use App\Models\User;
 use App\Models\UserMatch;
 use App\Repositories\MatcherQuery;
@@ -56,7 +56,7 @@ class MatcherService {
         return $userList;
     }
 
-    public function acceptMatch(User $currentUser, AcceptMatchInput $input) {
+    public function acceptMatch(User $currentUser, MatchInput $input) {
         //Check if match already exists
         $match = MatcherQuery::create()
             ->whereMatchExistsForUser($currentUser, $input->idOfUserUserWantToMatch)
@@ -73,7 +73,7 @@ class MatcherService {
         return $match;
     }
 
-    public function rejectMatch(User $currentUser, AcceptMatchInput $input) {
+    public function rejectMatch(User $currentUser, MatchInput $input) {
         //Check if match already exists
         $match = MatcherQuery::create()
             ->whereMatchExistsForUser($currentUser, $input->idOfUserUserWantToMatch)

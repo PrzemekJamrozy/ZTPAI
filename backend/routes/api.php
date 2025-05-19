@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/debug', [DebugController::class, 'debug']);
-
 Route::middleware([
     "auth:sanctum",
 ])->group(function () {
@@ -28,7 +27,6 @@ Route::middleware([
     Route::post('/match/accept-match', [MatcherController::class, 'acceptMatch']);
     Route::post('/match/reject-match', [MatcherController::class, 'rejectMatch']);
 
-//    Route::post('/debug', [DebugController::class, 'debugPost']);
 
 //ADMIN ENDPOINTS
     Route::apiResource("/admin/users", UserAdminController::class);

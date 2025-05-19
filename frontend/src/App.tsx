@@ -29,6 +29,9 @@ function App() {
             const result = await action_auth_me()
             if (result.success) {
                 dispatch(setUser(result.data))
+            }else{
+                localStorage.clear()
+                window.location.href = '/'
             }
             setIsLoading(false)
         }
