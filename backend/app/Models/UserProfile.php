@@ -26,8 +26,6 @@ class UserProfile extends Model {
     use HasFactory;
     protected $fillable = [
         'user_bio',
-        'facebook_link',
-        'instagram_link',
         'preferred_gender',
     ];
 

@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Helpers\ResponseHelper;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -19,10 +20,10 @@ class Handler {
             return ResponseHelper::error($e->getMessage(), $e->getCode());
         }
 
-        // Because sanctum tries to redirect when user is not logged in we throw 404 not found
-        if ($e instanceof RouteNotFoundException) {
-            return ResponseHelper::error("Not found", 404);
+        if($e instanceof AuthenticationException){
+            return ResponseHelper::error($e->getMessage(), 401);
         }
+
 
         if ($e instanceof ModelNotFoundException) {
             return ResponseHelper::error($e->getMessage(), $e->getCode());

@@ -31,9 +31,11 @@ class UserActions {
             $user->password = Hash::make($dto->password);
         }
 
-        if($dto->role){
-            $user->removeRole($user->getRoleNames()[0]);
-            $user->assignRole($dto->role);
+        if($dto instanceof UserAdminUpdateDto ){
+            if(!($dto->role instanceof Optional)) {
+                $user->removeRole($user->getRoleNames()[0]);
+                $user->assignRole($dto->role);
+            }
         }
 
         $user->fill($dto->all());

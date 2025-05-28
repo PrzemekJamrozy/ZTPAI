@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Domain\Actions\UserActions;
+use App\Enums\Roles;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\UserProfile;
@@ -16,6 +17,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(RoleSeeder::class);
+
         $admin = User::factory()->create([
             'name'     => 'Admin',
             'surname'  => 'Super',
@@ -24,13 +27,14 @@ class DatabaseSeeder extends Seeder
             'gender'   => 'MALE',
             'status'   => 'ACTIVE',
         ]);
+        $admin->assignRole(Roles::ADMIN);
         UserProfile::factory()->for($admin)->create();
         $users = User::factory(30)->create();
         foreach ($users as $user) {
             UserProfile::factory()->for($user)->create();
+            $user->assignRole(Roles::USER);
         }
 
-        $this->call(RoleSeeder::class);
 
     }
 }

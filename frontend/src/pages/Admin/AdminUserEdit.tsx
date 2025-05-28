@@ -2,7 +2,6 @@ import styles from "../../styles/UserEdit.module.css"
 import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {AdminEditUserForm, EditUserPayload} from "../../common/Forms/EditUserForm.ts";
-import {GenderEnum} from "../../common/enums/GenderEnum.ts";
 import {LoggedContainer} from "../LoggedContainer.tsx";
 import {PreferredGenderEnum} from "../../common/enums/PreferredGenderEnum.ts";
 import {useParams} from "react-router";
@@ -102,7 +101,7 @@ function AdminUserEdit() {
                         </label><br/>
                         <label>Email: <input type="email" {...register("email")}/></label><br/>
                         <label>Hasło: <input type="password" {...register("password")}/></label><br/>
-                        <label>Uprawnienia (podawać po przecinku bez spacji): </label>
+                        <label>Rola: </label>
                         <select {...register("role")}>
                             <option value={RolesEnum.USER}>Użytkownik</option>
                             <option value={RolesEnum.ADMIN}>Admin</option>

@@ -36,7 +36,7 @@ function App() {
             setIsLoading(false)
         }
 
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('token');
         if (token !== null) {
             dispatch(setToken(token));
             _handleRequest()

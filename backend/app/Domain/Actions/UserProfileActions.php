@@ -8,6 +8,7 @@ use App\Helpers\ImageHelper;
 use App\Models\User;
 use App\Models\UserProfile;
 use Illuminate\Support\Optional;
+use Illuminate\Support\Str;
 
 class UserProfileActions {
 
@@ -28,9 +29,15 @@ class UserProfileActions {
 
     public function updateUserProfile(UserOnboardingInput|UserProfileUpdateDto $input, UserProfile $profile): UserProfile {
         $profile->fill($input->all());
-        if($input->avatar !== null) {
+        if ($input->avatar !== null) {
             $result = $this->imageHelper->saveImage($input->avatar);
             $profile->avatar_path = $result;
+        }
+        if ($input->fbLink) {
+            $profile->facebook_link = Str::startsWith($input->fbLink, ["https://", "http://"]) ? $input->fbLink : "https://" . $input->fbLink;
+        }
+        if ($input->igLink) {
+            $profile->instagram_link = Str::startsWith($input->igLink, ["https://", "http://"]) ? $input->igLink : "https://" . $input->igLink;
         }
         $profile->save();
 

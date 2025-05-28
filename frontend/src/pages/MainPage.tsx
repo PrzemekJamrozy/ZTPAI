@@ -6,6 +6,7 @@ import {Link} from "react-router";
 
 
 function MainPage(){
+
     useEffect(()=>{
       document.body.classList.add(styles.mainPageBody)
       return () =>{

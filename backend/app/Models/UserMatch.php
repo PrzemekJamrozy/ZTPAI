@@ -31,7 +31,7 @@ class UserMatch extends Model
     }
 
     public function secondUser():BelongsTo{
-        return $this->belongsTo(User::class, 'user_first_id');
+        return $this->belongsTo(User::class, 'user_second_id');
     }
 
 }

@@ -14,6 +14,7 @@ function requester<T>(link: BACKEND_URLS|string, method: MethodType, payload?: T
     const token = localStorage.getItem("token");
     const headers = {
         'Content-Type': 'application/json',
+        'Accept': 'application/json'
     }
 
     if(token){

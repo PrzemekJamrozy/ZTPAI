@@ -40,9 +40,9 @@ class MatcherQuery extends BaseQuery {
     }
 
     public function whereMatchesApproved(User $user): static {
+        $this->query->where('show_match', true);
         $this->query->where('user_first_id', $user->id)
             ->orWhere('user_second_id', $user->id);
-        $this->query->where('show_match', true);
         return $this;
     }
 
