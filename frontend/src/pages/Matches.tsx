@@ -38,8 +38,9 @@ function Matches() {
                     {loading && <Spinner/>}
                     {!loading && <>
                         <h1 className={styles.matchesHeader}>Osoby które też chcą się z tobą poznać</h1>
-                        {matches.map(data =>
+                        <div style={{marginLeft:16}}>{matches.map(data =>
                             <MatchItem key={data.id} imageUrl={data.profile.avatar} name={data.name} surname={data.surname} igLink={data.profile.igLink} fbLink={data.profile.fbLink}/>)}
+                        {matches.length === 0 && <p>Nie masz jeszcze żadnych dopasowań</p>}</div>
                     </>
                     }
 
